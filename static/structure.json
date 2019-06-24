@@ -1,0 +1,24 @@
+{ "total": {"field_name":"vulnera","name" : "Vulnerabilidad","invert_palet":false},
+"categories":[
+        {"field_name":"exposi", "name":"Exposición","invert_palet":false,
+           "subcategories":[{"field_name":"exposi_a", "name":"Expocisión A","weight":0.2},
+                            {"field_name":"exposi_b", "name":"Expocisión B","weight":0.4},
+                            {"field_name":"exposi_c", "name":"Expocisión C","weight":0.2},
+                            {"field_name":"exposi_d", "name":"Expocisión D","weight":0.2}
+                            ]},
+        {"field_name":"resili", "name":"Resiliencia","invert_palet":true,
+          "subcategories":[{"field_name":"resili_a", "name":"Resiliencia A","weight":0.1},
+                         {"field_name":"resili_b", "name":"Resiliencia B","weight":0.4},
+                         {"field_name":"resili_c", "name":"Resiliencia C","weight":0.2},
+                         {"field_name":"resili_d", "name":"Resiliencia D","weight":0.1},
+                         {"field_name":"resili_e", "name":"Resiliencia E","weight":0.2}
+                         ]},
+        {"field_name":"suscep", "name":"Susceptibilidad","invert_palet":false,
+           "subcategories":[{"field_name":"suscep_a", "name":"Susceptibilidad A","weight":0.2},
+                            {"field_name":"suscep_b", "name":"Susceptibilidad B","weight":0.2},
+                            {"field_name":"suscep_c", "name":"Susceptibilidad C","weight":0.2},
+                            {"field_name":"suscep_d", "name":"Susceptibilidad D","weight":0.2},
+                            {"field_name":"suscep_e", "name":"Susceptibilidad E","weight":0.2}
+        ]}
+    ]
+}
