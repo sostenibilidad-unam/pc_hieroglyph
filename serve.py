@@ -14,15 +14,24 @@ from json import dumps
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads/'
+
+base_path = os.path.dirname(os.path.realpath(__file__))
+
+app.config['UPLOAD_FOLDER'] = os.path.join(base_path, 'uploads')
 
 ALLOWED_EXTENSIONS = ['prj', 'shp', 'dbf', 'shx']
 
-env = Environment(loader=FileSystemLoader('templates'))
+template_path = os.path.join(base_path, 'templates')
+env = Environment(loader=FileSystemLoader(template_path))
+
+url = "http://pch.apps.lancis.ecologia.unam.mx"
 
 @app.route("/")
 def root():
-    return redirect('/pc_glyph/example1', code=302)
+    if url is not None:
+        return redirect(url + '/pc_glyph/example1', code=302)    
+    else:
+        return redirect('/pc_glyph/example1', code=302)
 
 
 @app.route('/pc_glyph/<map_id>')
@@ -78,9 +87,9 @@ def upload():
             if f.filename.endswith(".shp"):
                 elShp = f.filename
             filenames.append(filename)
-    print os.path.join(app.config['UPLOAD_FOLDER'], elShp)
+    # print os.path.join(app.config['UPLOAD_FOLDER'], elShp)
     reader = shapefile.Reader(os.path.join(app.config['UPLOAD_FOLDER'], elShp))
-    print reader.shapeType
+    # print reader.shapeType
     fields = reader.fields[1:]
     field_names = [field[0] for field in fields]
     buff = []
@@ -96,7 +105,10 @@ def upload():
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], elShp[:-3] + "prj"))
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], elShp[:-3] + "shp"))
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], elShp[:-3] + "shx"))
-        return redirect("/pc_glyph/%s" % el_hash)
+        if url is not None:
+            return redirect(url + "/pc_glyph/%s" % el_hash)
+        else:
+            return redirect("/pc_glyph/%s" % el_hash)            
     else:
         os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], el_hash))
 
@@ -112,7 +124,10 @@ def upload():
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], elShp[:-3] + "prj"))
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], elShp[:-3] + "shp"))
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], elShp[:-3] + "shx"))
-    return redirect("/pc_glyph/%s" % el_hash)
+    if url is not None:
+        return redirect(url + "/pc_glyph/%s" % el_hash)
+    else:
+        return redirect("/pc_glyph/%s" % el_hash)
 
 
 
