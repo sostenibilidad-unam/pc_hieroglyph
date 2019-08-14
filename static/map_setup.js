@@ -64,6 +64,25 @@ var structure = { "total": {"field_name":"vulnera","name" : "Vulnerabilidad","in
         ]}
     ]
 };
+var field_names = { "vulnera":"Vulnerabilidad",
+					"exposi" :"Exposición",
+					"exposi_a":"Expocisión A",
+					"exposi_b":"Expocisión B",
+					"exposi_c":"Expocisión C",
+					"exposi_d":"Expocisión D",
+					"resili":"Resiliencia",
+					"resili_a":"Resiliencia A",
+					"resili_b":"Resiliencia B",
+					"resili_c":"Resiliencia C",
+					"resili_d":"Resiliencia D",
+					"resili_e":"Resiliencia E",
+					"suscep":"Susceptibilidad",
+					"suscep_a":"Susceptibilidad A",
+					"suscep_b":"Susceptibilidad B",
+					"suscep_c":"Susceptibilidad C",
+					"suscep_d":"Susceptibilidad D",
+					"suscep_e":"Susceptibilidad E"};
+        
 var fields_palettes = { "vulnera": true,
         				"exposi":true,
            				"exposi_a":true,
@@ -187,7 +206,13 @@ var displayFeatureInfo = function (pixel) {
 				data["categories"][i]["subcategories"][j]["value"] = feature.get([subcat.field_name]);
 			}
 		}
-		makeBarGlyph("glyph",800, data, true, false,colorscales);
+		c = document.getElementById("glyph_column");
+		ancho = c.clientWidth;
+		alto = c.clientHeight;
+		texto = "<h1>Colonias Seleccionadas</h1>"+'<div class="item">'+ feature.get("colonia") +'</div>';
+		lista = document.getElementById("selected");
+		lista.innerHTML = texto;
+		makeBarGlyph("glyph",Math.min(ancho,alto), data, true, false,colorscales);
 	}else{
 		vectorSource.clear();
 	    vectorSource.addFeatures(estosFeatures);
@@ -195,7 +220,24 @@ var displayFeatureInfo = function (pixel) {
 		stats_div.innerHTML = "selected: "+ ageb_ids.length;
 		
 		data = mean_glyph(estosFeatures);
-		makeBarGlyph("glyph",800, data, true, false,colorscales);
+		c = document.getElementById("glyph_column");
+		ancho = c.clientWidth;
+		alto = c.clientHeight;
+
+
+		name_list = [];
+		estosFeatures.forEach(function(feature){
+			name_list.push(feature.get("colonia"));
+		});
+		
+		texto = "<h1>Colonias Seleccionadas ("+name_list.length+")</h1>";
+		name_list.forEach(function(name){
+			texto = texto + '<div class="item">'+ name +'</div>'
+		});
+		lista = document.getElementById("selected");
+		lista.innerHTML = texto;
+
+		makeBarGlyph("glyph",Math.min(ancho,alto), data, true, false,colorscales);
 		
 
 	}
@@ -269,7 +311,7 @@ d3.csv(data_url, function(data) {
 
 	pcz = d3.parcoords()("#graph")
 	 .data(data)
-	 .hideAxis(["id"])
+	 .hideAxis(["id","colonia"])
 	 .composite("darken")
 	 .mode("queue")
 	 .rate(80)
@@ -284,21 +326,33 @@ d3.csv(data_url, function(data) {
 
 	// click label to activate coloring
 	pcz.svg.selectAll(".dimension")
-	 .on("click", change_color)
+	 //.on("click", change_color)
 	 .selectAll(".label")
 	 .style("font-size", "26px");
 	pcz.on("brush", function(d) {
 		vectorSource.clear();
 		pcz.shadows();
 		ageb_ids = [];
+		name_list = [];
 		d.forEach(function(entry) {
 			ageb_ids.push(entry["id"]);
+			name_list.push(entry["colonia"]);
 		});
 		stats_div.innerHTML = "selected: " + ageb_ids.length;
 		estosFeatures = todos.filter(function (feature) {return ageb_ids.indexOf(feature.get('id')) >= 0;});
 		vectorSource.addFeatures(estosFeatures);
 		data = mean_glyph(estosFeatures);
-		makeBarGlyph("glyph",800, data, true, false,colorscales);
+		texto = "<h1>Colonias Seleccionadas ("+name_list.length+")</h1>";
+		name_list.forEach(function(name){
+			texto = texto + '<div class="item">'+ name +'</div>'
+		});
+		lista = document.getElementById("selected");
+		lista.innerHTML = texto;
+
+		c = document.getElementById("glyph_column");
+		ancho = c.clientWidth;
+		alto = c.clientHeight;
+		makeBarGlyph("glyph",Math.min(alto,ancho), data, true, false,colorscales);
 	});
 });
 
@@ -371,10 +425,16 @@ function change_color(dimension, invert_palette) {
         	    return allStyles;
         	};
 
-        	miVector.setStyle(polygon_style_p);
+			miVector.setStyle(polygon_style_p);
+			title = document.getElementById("map_title");
+			
+			title.innerHTML = '<h2 align="center">'+field_names[dimension]+'</h2>';
+			// select the svg area
+
+
      }
 
-}
+};
 
 function pre_color(col,dimension, invert_palette){
 	var slice = _(col).pluck(dimension).map(parseFloat);
@@ -397,4 +457,24 @@ function reset(){
 	 .style("font-weight", "normal")
 	miVector.setStyle(polygon_style2);
 
-}
+};
+$(window).bind("load", function() {
+	change_color("vulnera",true);
+	name_list = [];
+	todos.forEach(function(feature){
+		name_list.push(feature.get("colonia"));
+	});
+	data = mean_glyph(todos);
+	texto = "<h1>Colonias Seleccionadas ("+name_list.length+")</h1>";
+	name_list.forEach(function(name){
+		texto = texto + '<div class="item">'+ name +'</div>'
+	});
+	lista = document.getElementById("selected");
+	lista.innerHTML = texto;
+
+	c = document.getElementById("glyph_column");
+	ancho = c.clientWidth;
+	alto = c.clientHeight;
+	makeBarGlyph("glyph",Math.min(alto,ancho), data, true, false,colorscales);
+ });
+

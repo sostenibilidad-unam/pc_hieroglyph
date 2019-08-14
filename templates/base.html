@@ -73,6 +73,9 @@
        #c5 {
           background-color: rgb(16,0,90);
        }
+	   .grid {
+			height: 98vh;
+		}
 
     </style>
 
@@ -103,26 +106,36 @@
 
 
 	<div class="ui one column stackable grid">
-		<div class="two column row">
-			<div class="ten wide column"> 
+		<div class="three column row">
+			<div class="four wide column"> 
 				<div class="ui segment">
-					<div id="map" style="height: 800px; width: 1200;"></div>
+					<div class="ui list" id="selected" style="height: 68vh; width: 22vw; overflow: scroll;">
+					</div>					
 				</div>
 			</div>
 			<div class="six wide column"> 
+				<div class="ui segment" id="map_title">
+				
+				</div>
 				<div class="ui segment">
-					<div id="glyph" style="height: 800px; width: 800;">
+					<div id="map" style="height: 62vh; width: 34vw;"></div>
+				</div>
+			</div>
+			<div id="glyph_column"class="six wide column"> 
+				<div class="ui segment">
+					<div id="glyph" style="height: 68vh; width: 45vw;">
 							<!-- <img src="/static/glyph1.svg" alt="alt text" height="800px" width="800px" />	 -->
 					</div>
 				</div>
 			</div>
+			
 			
 		</div>
 		<div class="one column row">
 			<div class="column"> 
 					<div class="sixteen wide column">
 							<div class="ui segment">
-								<div id="graph" class="parcoords" style="width:100%;height:370px;"></div>
+								<div id="graph" class="parcoords" style="width:100%;height:20vh;"></div>
 				
 								<div class="ui three column grid" style="margin-top: 0.5em; margin-left: 3em;">
 									<div class="five wide column">

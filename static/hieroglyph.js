@@ -62,10 +62,10 @@ linspace = function linspace(a,b,n) {
 
 addArcs = function(target, radius, center, data){
     //""" Adds as many as categories arcs given radius and center """
-    var values = [];
+    var cat_values = [];
     categories = data["categories"].length;
     function myFunction(value, index, array) {
-        values.push(value["value"]);
+        cat_values.push(value["value"]);
     }
     data["categories"].forEach(myFunction);
     cortesAngulares = linspace(0, 360, categories + 1)
@@ -79,17 +79,16 @@ addArcs = function(target, radius, center, data){
             palette = colorscale;
         }
         r_gray = radius*0.94;
-        r_value = r_gray-((r_gray*0.20)*(1.0-values[i-1]));
-        width = radius * 0.355 * values[(i-1)];
-        //console.log(r_gray, width, values[(i-1)]);
+        r_value = r_gray-((r_gray*0.20)*(1.0-cat_values[i-1]));
+        width = radius * 0.355 * cat_values[(i-1)];
+        //console.log(r_gray, width, cat_values[(i-1)]);
         p0=angle2xy(center[0], center[1], r_gray, cortesAngulares[i] - delta);
         p1=angle2xy(center[0], center[1], r_gray, cortesAngulares[i - 1] + delta);
         width_gray = radius * 0.355
         addArc(target, p0, p1, r_gray, width_gray, 'gainsboro',field_name,invert);
-        
         p0=angle2xy(center[0], center[1], r_value, cortesAngulares[i] - delta),
         p1=angle2xy(center[0], center[1], r_value, cortesAngulares[i - 1] + delta),
-        addArc(target, p0, p1, r_value, width, index2rgb(palette,values[i-1]),field_name,invert);
+        addArc(target, p0, p1, r_value, width, index2rgb(palette,cat_values[i-1]),field_name,invert);
         radius_in = radius*0.76;
         radius_out = radius*1.12;
         p0_out = angle2xy(center[0], center[1],radius_out, cortesAngulares[i] - delta);
@@ -235,9 +234,9 @@ addLabels = function(target, radius, center, data){
     delta = (7/120)*cortesAngulares[1];
     size = Math.round(12*radius/100);
     
-    var values = [];
+    var cat_values = [];
     function myFunction(value, index, array) {
-        values.push(value["value"]);
+        cat_values.push(value["value"]);
     }
     data["categories"].forEach(myFunction);
     var alverez = "0";
@@ -383,7 +382,6 @@ makeBarGlyph = function(target_div, svg_width,
     document.getElementById(target_div).innerHTML = "";                
     var center = [svg_width/2.0,svg_width/2.0];
     var draw = SVG(target_div).size(svg_width,svg_width);
-    
     r = width2r(svg_width,labels,toEnsableLabelsLater, data);
     addCircle(draw,r,center,data);
     addArcs(draw,r,center,data);
