@@ -4,7 +4,7 @@
 import os
 from datetime import datetime
 from flask import Flask, render_template, jsonify, redirect, url_for, request, send_from_directory
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 import shapefile
 from jinja2 import Environment, FileSystemLoader
 import json
@@ -24,12 +24,14 @@ ALLOWED_EXTENSIONS = ['prj', 'shp', 'dbf', 'shx']
 template_path = os.path.join(base_path, 'templates')
 env = Environment(loader=FileSystemLoader(template_path))
 
-url = "http://pch.apps.lancis.ecologia.unam.mx"
+#url = "http://pch.apps.lancis.ecologia.unam.mx"
+
+url = None
 
 @app.route("/")
 def root():
     if url is not None:
-        return redirect(url + '/pc_glyph/example1', code=302)    
+        return redirect(url + '/pc_glyph/example1', code=302)
     else:
         return redirect('/pc_glyph/example1', code=302)
 
@@ -108,7 +110,7 @@ def upload():
         if url is not None:
             return redirect(url + "/pc_glyph/%s" % el_hash)
         else:
-            return redirect("/pc_glyph/%s" % el_hash)            
+            return redirect("/pc_glyph/%s" % el_hash)
     else:
         os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], el_hash))
 
