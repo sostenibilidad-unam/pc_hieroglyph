@@ -43,10 +43,10 @@ colorscales = function(value,invert){
 var structure = { "total": {"field_name":"vulnera","name" : "Vulnerabilidad","invert_palette":true},
 "categories":[
         {"field_name":"exposi", "name":"Exposición","invert_palette":true,
-           "subcategories":[{"field_name":"exposi_a", "name":"Expocisión A","weight":0.2},
-                            {"field_name":"exposi_b", "name":"Expocisión B","weight":0.4},
-                            {"field_name":"exposi_c", "name":"Expocisión C","weight":0.2},
-                            {"field_name":"exposi_d", "name":"Expocisión D","weight":0.2}
+           "subcategories":[{"field_name":"exposi_a", "name":"Exposición A","weight":0.2},
+                            {"field_name":"exposi_b", "name":"Exposición B","weight":0.4},
+                            {"field_name":"exposi_c", "name":"Exposición C","weight":0.2},
+                            {"field_name":"exposi_d", "name":"Exposición D","weight":0.2}
                             ]},
         {"field_name":"resili", "name":"Resiliencia","invert_palette":false,
           "subcategories":[{"field_name":"resili_a", "name":"Resiliencia A","weight":0.1},
